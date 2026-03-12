@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 130" width="500" height="130">
+
+  <!-- ICON BACKGROUND — rounded square, navy -->
+  <rect x="4" y="4" width="118" height="118" rx="22" fill="#0f2340"/>
+
+  <!-- ROOF line above figures -->
+  <path d="M30 54 L63 24 L96 54"
+    stroke="#c9a84c" stroke-width="4.5"
+    fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- PERSON LEFT (slightly offset back) -->
+  <circle cx="44" cy="70" r="10.5" fill="#e8c97a"/>
+  <path d="M22 114 Q22 88 44 86 Q58 86 60 98 Q52 99 50 114 Z" fill="#c9a84c"/>
+
+  <!-- PERSON RIGHT (front, slightly larger) -->
+  <circle cx="78" cy="67" r="12" fill="#f5f0e8"/>
+  <path d="M52 118 Q54 91 78 89 Q102 91 104 118 Z" fill="#c0522a"/>
+
+  <!-- Small heart between them -->
+  <path d="M60 78 C60 75.5 62.5 73.5 62.5 76 C62.5 73.5 65 75.5 65 78 C65 80.5 62.5 83 62.5 83 C62.5 83 60 80.5 60 78 Z"
+    fill="white" opacity="0.9"/>
+
+  <!-- WORDMARK -->
+  <text
+    x="144" y="63"
+    font-family="Georgia, serif"
+    font-size="43"
+    font-weight="700"
+    fill="#0f2340"
+    letter-spacing="-1.2">Roomie</text>
+
+  <!-- Divider -->
+  <line x1="144" y1="73" x2="492" y2="73" stroke="#ddd6c8" stroke-width="1.5"/>
+
+  <!-- Resume in gold -->
+  <text
+    x="144" y="109"
+    font-family="Georgia, serif"
+    font-size="43"
+    font-weight="700"
+    fill="#c9a84c"
+    letter-spacing="-1.2">Resume</text>
+
+  <!-- Verified tick badge after Resume -->
+  <circle cx="480" cy="100" r="6" fill="#1e5631"/>
+  <path d="M476.5 100 L479 102.5 L483.5 97.5" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+</svg>

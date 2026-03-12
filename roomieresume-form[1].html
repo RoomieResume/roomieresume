@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoomieResume — Create Your Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0f2340; --cream: #f5f0e8; --warm: #e8dfd0;
+    --gold: #c9a84c; --rust: #c0522a; --green: #1e5631;
+    --text: #1a1a1a; --muted: #6b6b6b; --border: #ddd6c8;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
+  nav { background: var(--navy); padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--cream); text-decoration: none; }
+  .logo span { color: var(--gold); }
+  .nav-link { color: rgba(245,240,232,0.55); font-size: 0.82rem; text-decoration: none; }
+  .hero { background: var(--navy); padding: 48px; text-align: center; }
+  .hero-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.4); padding: 5px 14px; border-radius: 2px; margin-bottom: 16px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: var(--cream); margin-bottom: 8px; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero p { color: rgba(245,240,232,0.55); font-size: 0.9rem; }
+  .container { max-width: 700px; margin: 0 auto; padding: 48px 24px 80px; }
+  .section-block { background: white; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 24px; overflow: hidden; }
+  .section-head { background: var(--navy); padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  .section-head .num { background: var(--gold); color: var(--navy); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; flex-shrink: 0; }
+  .section-head h2 { color: var(--cream); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.05em; }
+  .section-body { padding: 28px 24px; }
+  .field { margin-bottom: 20px; }
+  .field:last-child { margin-bottom: 0; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label.field-label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  label.field-label .req { color: var(--rust); }
+  label.field-label .hint { font-weight: 300; color: var(--muted); font-size: 0.75rem; display: block; margin-top: 2px; }
+  input[type="text"], input[type="email"], input[type="tel"], select, textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text); background: white; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--navy); }
+  textarea { resize: vertical; min-height: 80px; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b6b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .radio-group, .check-group { display: flex; flex-direction: column; gap: 8px; }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt { display: flex; align-items: center; gap: 10px; background: var(--cream); border: 1.5px solid var(--border); border-radius: 6px; padding: 10px 14px; cursor: pointer; font-size: 0.84rem; transition: border-color 0.15s; }
+  .opt:hover { border-color: var(--navy); }
+  .opt input { accent-color: var(--navy); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+  .chip { display: flex; align-items: center; gap: 8px; background: var(--cream); border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; cursor: pointer; font-size: 0.78rem; font-weight: 500; transition: all 0.15s; }
+  .chip:hover { border-color: var(--navy); }
+  .chip input { accent-color: var(--navy); cursor: pointer; }
+  .scale-wrap { display: flex; align-items: center; gap: 10px; }
+  .scale-wrap span { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+  input[type="range"] { flex: 1; accent-color: var(--navy); cursor: pointer; }
+  .scale-val { background: var(--warm); padding: 3px 10px; border-radius: 4px; font-size: 0.82rem; font-weight: 700; color: var(--navy); min-width: 40px; text-align: center; }
+  .disclaimer { background: #fff8f0; border: 2px solid var(--rust); border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
+  .disclaimer h3 { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 10px; }
+  .disclaimer p { font-size: 0.83rem; line-height: 1.8; color: var(--text); font-style: italic; }
+  .submit-area { text-align: center; padding: 16px 0; }
+  .btn-submit { background: var(--green); color: white; border: none; padding: 16px 56px; border-radius: 5px; font-size: 1rem; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; letter-spacing: 0.02em; transition: opacity 0.2s; }
+  .btn-submit:hover { opacity: 0.88; }
+  .submit-note { font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
+  @media (max-width: 600px) {
+    nav { padding: 14px 20px; }
+    .hero { padding: 32px 20px; }
+    .hero h1 { font-size: 1.8rem; }
+    .container { padding: 28px 16px 60px; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Roomie<span>Resume</span></a>
+  <a href="roomieresume-browse.html" class="nav-link">Browse Profiles →</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Free to Create</div>
+  <h1>Build your <em>verified</em> profile.</h1>
+  <p>5 minutes · Reference checked · Your data never sold</p>
+</div>
+
+<div class="container">
+<form name="roomieresume-profiles" method="POST" netlify data-netlify="true" action="/success.html">
+<input type="hidden" name="form-name" value="roomieresume-profiles">
+
+<!-- SECTION 1 -->
+<div class="section-block">
+  <div class="section-head"><div class="num">1</div><h2>Privacy &amp; Data Agreement</h2></div>
+  <div class="section-body">
+    <div class="disclaimer">
+      <h3>Your Data &amp; Privacy</h3>
+      <p>By submitting this form, you agree that RoomieResume will store your information securely and use it solely to match you with compatible housemates. Your personal details will never be sold or shared with third parties. To request profile deletion, reply to your confirmation email. RoomieResume is a student-run platform currently in beta.</p>
+    </div>
+    <div class="field">
+      <label class="field-label">I agree to the privacy policy above <span class="req">*</span></label>
+      <div class="check-group">
+        <label class="opt"><input type="checkbox" name="privacy_agree" value="agreed" required> I have read and agree — my data will only be used to find me a compatible housemate</label>
+        <label class="opt"><input type="checkbox" name="honest_agree" value="agreed" required> I confirm all information I provide will be truthful and accurate</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section-block">
+  <div class="section-head"><div class="num">2</div><h2>About You</h2></div>
+  <div class="section-body">
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">First Name <span class="req">*</span></label>
+        <input type="text" name="first_name" placeholder="Sarah" required>
+      </div>
+      <div class="field">
+        <label class="field-label">Last Initial <span class="req">*</span><span class="hint">Only your initial shows publicly</span></label>
+        <input type="text" name="last_initial" placeholder="M" maxlength="1" required>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">Email Address <span class="req">*</span></label>
+        <input type="email" name="email" placeholder="you@email.com" required>
+      </div>
+      <div class="field">
+        <label class="field-label">Phone Number <span class="req">*</span><span class="hint">Never shown publicly</span></label>
+        <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">University or Area <span class="req">*</span></label>
+      <input type="text" name="location" placeholder="e.g. George Mason University or Fairfax, VA" required>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">When are you looking to move? <span class="req">*</span></label>
+        <select name="move_timeline" required>
+          <option value="">Select...</option>
+          <option>Within 1 month</option>
+          <option>1–3 months</option>
+          <option>3–6 months</option>
+          <option>Just browsing for now</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Monthly rent budget <span class="req">*</span></label>
+        <select name="budget" required>
+          <option value="">Select...</option>
+          <option>Under $600</option>
+          <option>$600–$900</option>
+          <option>$900–$1,200</option>
+          <option>$1,200–$1,600</option>
+          <option>$1,600+</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Are you looking for a room or a housemate? <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="opt"><input type="radio" name="seeking" value="need-room" required> I need a room (looking for somewhere to live)</label>
+        <label class="opt"><input type="radio" name="seeking" value="have-room"> I have a room (looking for someone to fill it)</label>
+        <label class="opt"><input type="radio" name="seeking" value="either"> Either / flexible</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section-block">
+  <div class="section-head"><div class="num">3</div><h2>Your Lifestyle</h2></div>
+  <div class="section-body">
+    <div class="field">
+      <label class="field-label">Sleep schedule <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="opt"><input type="radio" name="sleep" value="early-bird" required> Early bird — up by 7am, asleep by 11pm</label>
+        <label class="opt"><input type="radio" name="sleep" value="night-owl"> Night owl — up past midnight, sleep in</label>
+        <label class="opt"><input type="radio" name="sleep" value="flexible"> Flexible — it shifts around</label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Work / study schedule <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="opt"><input type="radio" name="work_schedule" value="wfh" required> Mostly at home (remote / online)</label>
+        <label class="opt"><input type="radio" name="work_schedule" value="out"> Out most of the day (in-person)</label>
+        <label class="opt"><input type="radio" name="work_schedule" value="mixed"> Mixed — some days home, some out</label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Cleanliness <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="opt"><input type="radio" name="cleanliness_desc" value="very-tidy" required> Very tidy — I clean regularly and like things orderly</label>
+        <label class="opt"><input type="radio" name="cleanliness_desc" value="reasonably-tidy"> Reasonably tidy — I clean when needed</label>
+        <label class="opt"><input type="radio" name="cleanliness_desc" value="relaxed"> Relaxed — not a neat freak but not a mess</label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Rate your cleanliness (1 = relaxed, 10 = very tidy) <span class="req">*</span></label>
+      <div class="scale-wrap">
+        <span>Relaxed</span>
+        <input type="range" name="cleanliness_score" min="1" max="10" value="5" oninput="document.getElementById('cv').textContent=this.value+'/10'">
+        <span>Tidy</span>
+        <div class="scale-val" id="cv">5/10</div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">How social are you at home? <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="opt"><input type="radio" name="social" value="very-social" required> Very social — I enjoy spending time with housemates</label>
+        <label class="opt"><input type="radio" name="social" value="independent"> Friendly but independent — polite but keep to myself</label>
+        <label class="opt"><input type="radio" name="social" value="private"> Private — I prefer my own space</label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Guests and visitors <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="opt"><input type="radio" name="guests" value="rarely" required> Rarely have guests over</label>
+        <label class="opt"><input type="radio" name="guests" value="occasionally"> Occasionally — a friend now and then</label>
+        <label class="opt"><input type="radio" name="guests" value="regularly"> Regularly — I enjoy hosting</label>
+        <label class="opt"><input type="radio" name="guests" value="often"> Often — partner/friends stay over frequently</label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Noise level <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="opt"><input type="radio" name="noise" value="quiet" required> Very quiet — I prefer a calm home</label>
+        <label class="opt"><input type="radio" name="noise" value="moderate"> Moderate — music or TV sometimes</label>
+        <label class="opt"><input type="radio" name="noise" value="lively"> Lively — I like background noise</label>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">Do you smoke? <span class="req">*</span></label>
+        <select name="smoking" required>
+          <option value="">Select...</option>
+          <option>No</option>
+          <option>Outside only</option>
+          <option>Yes</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Pets <span class="req">*</span></label>
+        <select name="pets" required>
+          <option value="">Select...</option>
+          <option>No pets, prefer pet-free home</option>
+          <option>No pets, fine living with them</option>
+          <option>I have a dog</option>
+          <option>I have a cat</option>
+          <option>I have another pet</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Anything else about your lifestyle? <span class="hint">Optional</span></label>
+      <textarea name="lifestyle_extra" placeholder="e.g. I keep a vegetarian kitchen, I work night shifts on weekends..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section-block">
+  <div class="section-head"><div class="num">4</div><h2>What You're Looking For</h2></div>
+  <div class="section-body">
+    <div class="field">
+      <label class="field-label">Top priorities in a housemate <span class="req">*</span><span class="hint">Pick up to 3</span></label>
+      <div class="chip-group" id="priorities">
+        <label class="chip"><input type="checkbox" name="priorities" value="cleanliness"> Cleanliness</label>
+        <label class="chip"><input type="checkbox" name="priorities" value="quiet"> Quiet home</label>
+        <label class="chip"><input type="checkbox" name="priorities" value="friendly"> Friendly</label>
+        <label class="chip"><input type="checkbox" name="priorities" value="schedule"> Similar schedule</label>
+        <label class="chip"><input type="checkbox" name="priorities" value="privacy"> Respects privacy</label>
+        <label class="chip"><input type="checkbox" name="priorities" value="pet-friendly"> Pet-friendly</label>
+        <label class="chip"><input type="checkbox" name="priorities" value="non-smoker"> Non-smoker</label>
+        <label class="chip"><input type="checkbox" name="priorities" value="bills"> Reliable with bills</label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Anything specific you're looking for or want to avoid? <span class="hint">Optional</span></label>
+      <textarea name="looking_for_extra" placeholder="Be honest — this helps us match you better"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section-block">
+  <div class="section-head"><div class="num">5</div><h2>Your Reference</h2></div>
+  <div class="section-body">
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label">Reference name <span class="req">*</span></label>
+        <input type="text" name="reference_name" placeholder="John Smith" required>
+      </div>
+      <div class="field">
+        <label class="field-label">Their relationship to you <span class="req">*</span></label>
+        <select name="reference_relationship" required>
+          <option value="">Select...</option>
+          <option>Past landlord</option>
+          <option>Past housemate</option>
+          <option>Letting agent</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">Reference email or phone <span class="req">*</span><span class="hint">We'll send them a short 3-question check. Their response is confidential.</span></label>
+      <input type="text" name="reference_contact" placeholder="john@email.com or +1 555 000 0000" required>
+    </div>
+    <div class="field">
+      <label class="field-label">Has your reference agreed to be contacted? <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="opt"><input type="radio" name="ref_consent" value="yes" required> Yes — they're expecting to hear from RoomieResume</label>
+        <label class="opt"><input type="radio" name="ref_consent" value="not-yet"> Not yet — I'll let them know before submitting</label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label">How did you hear about RoomieResume? <span class="req">*</span></label>
+      <select name="how_heard" required>
+        <option value="">Select...</option>
+        <option>Facebook group</option>
+        <option>Nextdoor</option>
+        <option>Instagram / TikTok</option>
+        <option>Reddit</option>
+        <option>Friend or word of mouth</option>
+        <option>University noticeboard / flyer</option>
+        <option>Letting agency</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="field-label">Anything else you'd like us to know? <span class="hint">Optional</span></label>
+      <textarea name="anything_else" placeholder="Any context that might help us find you the right match"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="submit-area">
+  <button type="submit" class="btn-submit">Submit My Profile →</button>
+  <p class="submit-note">Your profile will be reviewed within 48 hours. We'll email you when you're verified and live.</p>
+</div>
+
+</form>
+</div>
+
+<script>
+  document.querySelectorAll('#priorities input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const checked = document.querySelectorAll('#priorities input:checked');
+      if (checked.length > 3) this.checked = false;
+    });
+  });
+</script>
+
+</body>
+</html>

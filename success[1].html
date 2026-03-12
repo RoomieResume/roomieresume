@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoomieResume — You're In!</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --navy: #0f2340; --cream: #f5f0e8; --gold: #c9a84c; --green: #1e5631; --rust: #c0522a; --border: #ddd6c8; --muted: #6b6b6b; }
+  html, body { height: 100%; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); overflow-x: hidden; }
+
+  /* CONFETTI */
+  #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+
+  nav { background: var(--navy); padding: 18px 48px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--cream); text-decoration: none; }
+  .logo span { color: var(--gold); }
+
+  .main { min-height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; padding: 48px 24px; position: relative; z-index: 1; }
+
+  .card { max-width: 560px; width: 100%; text-align: center; }
+
+  .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: var(--green); margin: 0 auto 28px;
+    box-shadow: 0 0 0 12px rgba(30,86,49,0.12), 0 0 0 24px rgba(30,86,49,0.06);
+    animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .badge svg { width: 44px; height: 44px; }
+
+  h1 {
+    font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900;
+    color: var(--navy); line-height: 1.15; margin-bottom: 12px;
+    animation: fadeup 0.5s 0.2s both;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
+
+  .subtitle {
+    font-size: 1rem; color: var(--muted); font-weight: 300; line-height: 1.7;
+    margin-bottom: 40px; animation: fadeup 0.5s 0.3s both;
+  }
+
+  @keyframes fadeup {
+    0% { opacity: 0; transform: translateY(16px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .steps {
+    background: white; border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px; margin-bottom: 36px; text-align: left;
+    animation: fadeup 0.5s 0.4s both;
+  }
+  .steps-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); margin-bottom: 20px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 18px; }
+  .step:last-child { margin-bottom: 0; }
+  .step-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; }
+  .step-icon.gold { background: rgba(201,168,76,0.15); }
+  .step-icon.navy { background: rgba(15,35,64,0.1); }
+  .step-icon.green { background: rgba(30,86,49,0.12); }
+  .step-text strong { font-size: 0.88rem; color: var(--navy); display: block; margin-bottom: 3px; }
+  .step-text span { font-size: 0.8rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 20px; }
+
+  .share-nudge {
+    background: var(--navy); border-radius: 10px; padding: 20px 24px;
+    margin-bottom: 36px; animation: fadeup 0.5s 0.5s both;
+    display: flex; align-items: center; gap: 16px; text-align: left;
+  }
+  .share-nudge .emoji { font-size: 2rem; flex-shrink: 0; }
+  .share-nudge p { color: rgba(245,240,232,0.75); font-size: 0.84rem; line-height: 1.6; }
+  .share-nudge p strong { color: var(--gold); display: block; margin-bottom: 4px; font-size: 0.9rem; }
+
+  .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; animation: fadeup 0.5s 0.6s both; }
+  .btn-primary { background: var(--navy); color: var(--cream); padding: 14px 32px; border-radius: 5px; font-size: 0.9rem; font-weight: 600; text-decoration: none; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost { background: transparent; color: var(--navy); border: 1.5px solid var(--border); padding: 14px 32px; border-radius: 5px; font-size: 0.9rem; font-weight: 600; text-decoration: none; font-family: 'DM Sans', sans-serif; transition: border-color 0.2s; }
+  .btn-ghost:hover { border-color: var(--navy); }
+
+  @media (max-width: 600px) {
+    nav { padding: 14px 20px; }
+    h1 { font-size: 2rem; }
+    .share-nudge { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="logo">Roomie<span>Resume</span></a>
+</nav>
+
+<div class="main">
+  <div class="card">
+
+    <div class="badge">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 22L18 32L36 12" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <h1>You're <em>in!</em> 🎉</h1>
+    <p class="subtitle">Your RoomieResume profile has been submitted.<br>We'll have you verified and live within 48 hours.</p>
+
+    <div class="steps">
+      <div class="steps-title">What happens next</div>
+      <div class="step">
+        <div class="step-icon gold">📨</div>
+        <div class="step-text">
+          <strong>Reference check — within 24 hrs</strong>
+          <span>We'll reach out to your reference with 3 quick questions. Make sure they're expecting our message!</span>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="step">
+        <div class="step-icon navy">🔍</div>
+        <div class="step-text">
+          <strong>Profile review — 24–48 hrs</strong>
+          <span>Once your reference responds we'll review your profile and approve it for the platform.</span>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="step">
+        <div class="step-icon green">✅</div>
+        <div class="step-text">
+          <strong>You go live — we'll email you</strong>
+          <span>You'll get a confirmation email the moment your verified profile is live and visible to others.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="share-nudge">
+      <div class="emoji">🏠</div>
+      <p><strong>Know someone looking for a room or housemate?</strong>
+      Send them to RoomieResume — the more verified profiles we have, the faster everyone finds a match.</p>
+    </div>
+
+    <div class="buttons">
+      <a href="roomieresume-browse.html" class="btn-primary">Browse Verified Profiles →</a>
+      <a href="index.html" class="btn-ghost">Back to Home</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Confetti
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+const colors = ['#c9a84c', '#0f2340', '#1e5631', '#c0522a', '#f5f0e8', '#e8dfd0', '#4a90d9'];
+const pieces = [];
+const count = 160;
+
+for (let i = 0; i < count; i++) {
+  pieces.push({
+    x: Math.random() * canvas.width,
+    y: -20 - Math.random() * canvas.height * 0.5,
+    w: 8 + Math.random() * 8,
+    h: 4 + Math.random() * 6,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    speed: 2 + Math.random() * 4,
+    angle: Math.random() * Math.PI * 2,
+    spin: (Math.random() - 0.5) * 0.15,
+    drift: (Math.random() - 0.5) * 1.5,
+    opacity: 0.85 + Math.random() * 0.15
+  });
+}
+
+let frame = 0;
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  pieces.forEach(p => {
+    p.y += p.speed;
+    p.x += p.drift;
+    p.angle += p.spin;
+    if (p.y > canvas.height + 20) {
+      p.y = -20;
+      p.x = Math.random() * canvas.width;
+    }
+    ctx.save();
+    ctx.globalAlpha = p.opacity;
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    ctx.restore();
+  });
+  frame++;
+  if (frame < 300) requestAnimationFrame(animate);
+  else {
+    // Fade out
+    let alpha = 1;
+    function fadeOut() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      alpha -= 0.02;
+      if (alpha > 0) {
+        pieces.forEach(p => {
+          p.y += p.speed * 0.5;
+          ctx.save();
+          ctx.globalAlpha = p.opacity * alpha;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        requestAnimationFrame(fadeOut);
+      }
+    }
+    fadeOut();
+  }
+}
+animate();
+</script>
+
+</body>
+</html>
