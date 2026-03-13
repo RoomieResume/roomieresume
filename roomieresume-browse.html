@@ -163,7 +163,7 @@
 
 <script>
   const SHEET_ID = '1LaX3ogUTQmBOE89f0fbaAxZc0Ro-BD1FmaWYWcff-OQ';
-  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Profiles`;
+  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Public&gid=940284971`;
 
   let allProfiles = [];
 
@@ -278,7 +278,7 @@
           });
           return obj;
         })
-        .filter(p => p.status && p.status.toLowerCase() === 'verified');
+        .filter(p => p.name && p.name.trim() !== '');
 
       allProfiles = profiles;
       updateStats(profiles);
