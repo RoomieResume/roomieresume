@@ -268,7 +268,13 @@
       const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);/)[1]);
 
       const rows = json.table.rows;
-      const cols = json.table.cols.map(c => c.label.toLowerCase().replace(/ /g, '_'));
+      const cols = json.table.cols.map(c => {
+          const label = c.label.toLowerCase().trim();
+          if (label === 'lifestyle summa' || label.startsWith('lifestyle sum')) return 'lifestyle_summary';
+          if (label === 'move timeline') return 'move_timeline';
+          if (label === 'looking for extra') return 'looking_for_extra';
+          return label.replace(/ /g, '_');
+        });
 
       const profiles = rows
         .map(row => {
