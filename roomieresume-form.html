@@ -350,5 +350,150 @@
   });
 </script>
 
+<!-- ROOMIERESUME AUTH NAV — include this before </body> on every page -->
+<style>
+  .auth-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gold); color: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; position: relative; flex-shrink: 0;
+    border: 2px solid rgba(201,168,76,0.4);
+    transition: transform 0.15s;
+  }
+  .auth-avatar:hover { transform: scale(1.05); }
+
+  .auth-dropdown {
+    position: absolute; top: calc(100% + 10px); right: 0;
+    background: white; border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: 0 8px 32px rgba(15,35,64,0.12);
+    min-width: 200px; padding: 8px 0; z-index: 999;
+    display: none;
+  }
+  .auth-dropdown.open { display: block; }
+
+  .auth-dropdown-header {
+    padding: 10px 16px 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .auth-dropdown-email {
+    font-size: 0.72rem; color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 170px;
+  }
+  .auth-dropdown-name {
+    font-size: 0.82rem; font-weight: 600; color: var(--navy);
+    margin-bottom: 2px;
+  }
+
+  .auth-dropdown a, .auth-dropdown button {
+    display: block; width: 100%; text-align: left;
+    padding: 9px 16px; font-size: 0.82rem;
+    color: var(--text); text-decoration: none;
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    transition: background 0.15s;
+  }
+  .auth-dropdown a:hover, .auth-dropdown button:hover {
+    background: var(--warm);
+  }
+  .auth-dropdown .signout-btn {
+    color: var(--rust); border-top: 1px solid var(--border);
+    margin-top: 4px;
+  }
+
+  .auth-wrapper { position: relative; display: flex; align-items: center; }
+</style>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBnZLWnmW2mSwU-DYiHG1zKTUPx5jQ1f4s",
+    authDomain: "roomieresume.firebaseapp.com",
+    projectId: "roomieresume",
+    storageBucket: "roomieresume.firebasestorage.app",
+    messagingSenderId: "954670294345",
+    appId: "1:954670294345:web:aba84ab600a2e4835b6698"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Session persistence — logs out when browser/tab is closed
+  setPersistence(auth, browserSessionPersistence);
+
+  // Inactivity timeout — 30 minutes
+  let inactivityTimer;
+  const INACTIVITY_LIMIT = 30 * 60 * 1000;
+
+  function resetTimer() {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+      signOut(auth);
+      window.location.href = 'login.html';
+    }, INACTIVITY_LIMIT);
+  }
+
+  ['mousemove','keydown','click','scroll','touchstart'].forEach(e => {
+    document.addEventListener(e, resetTimer, { passive: true });
+  });
+
+  function getInitial(email) {
+    return email ? email[0].toUpperCase() : '?';
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    const loginBtn = document.getElementById('nav-login-btn');
+    if (!loginBtn) return;
+
+    if (user) {
+      resetTimer();
+      // Replace Sign In button with avatar + dropdown
+      const wrapper = document.createElement('div');
+      wrapper.className = 'auth-wrapper';
+      wrapper.innerHTML = `
+        <div class="auth-avatar" id="auth-avatar-btn" title="${user.email}">
+          ${getInitial(user.email)}
+        </div>
+        <div class="auth-dropdown" id="auth-dropdown">
+          <div class="auth-dropdown-header">
+            <div class="auth-dropdown-name">My Account</div>
+            <div class="auth-dropdown-email">${user.email}</div>
+          </div>
+          <a href="roomieresume-browse.html">Browse Profiles</a>
+          <a href="roomieresume-form.html">Edit My Profile</a>
+          <button class="signout-btn" id="signout-btn">Sign Out</button>
+        </div>
+      `;
+      loginBtn.replaceWith(wrapper);
+
+      // Toggle dropdown
+      document.getElementById('auth-avatar-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('auth-dropdown').classList.toggle('open');
+      });
+
+      // Close dropdown on outside click
+      document.addEventListener('click', () => {
+        const dd = document.getElementById('auth-dropdown');
+        if (dd) dd.classList.remove('open');
+      });
+
+      // Sign out
+      document.getElementById('signout-btn').addEventListener('click', async () => {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      });
+
+    } else {
+      // Not logged in — show Sign In link normally
+      loginBtn.style.display = '';
+    }
+  });
+</script>
+
 </body>
 </html>
