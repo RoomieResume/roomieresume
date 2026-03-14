@@ -46,6 +46,7 @@
     letter-spacing: -0.02em;
   }
   .nav-logo span { color: var(--gold); }
+  .nav-right { display: flex; gap: 12px; align-items: center; }
   .nav-cta {
     background: var(--navy); color: var(--cream);
     padding: 10px 24px; border-radius: 4px;
@@ -54,6 +55,15 @@
     transition: background 0.2s;
   }
   .nav-cta:hover { background: var(--gold); color: var(--navy); }
+  .nav-ghost {
+    background: transparent; color: var(--navy);
+    padding: 10px 20px; border-radius: 4px;
+    font-size: 0.85rem; font-weight: 600;
+    text-decoration: none; letter-spacing: 0.03em;
+    border: 1.5px solid rgba(15,35,64,0.2);
+    transition: all 0.2s;
+  }
+  .nav-ghost:hover { border-color: var(--navy); }
 
   /* HERO */
   .hero {
@@ -293,7 +303,11 @@
 
 <nav>
   <div class="nav-logo">Roomie<span>Resume</span></div>
-  <a href="roomieresume-form.html" class="nav-cta">Create Your Profile →</a>
+  <div class="nav-right">
+    <a href="roomieresume-browse.html" class="nav-ghost">Browse Profiles</a>
+    <a href="login.html" class="nav-ghost" id="nav-login-btn">Sign In</a>
+    <a href="roomieresume-form.html" class="nav-cta">Create Your Profile →</a>
+  </div>
 </nav>
 
 <section class="hero">
